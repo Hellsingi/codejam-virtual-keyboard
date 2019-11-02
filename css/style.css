@@ -89,3 +89,7 @@ body {
 .keyboard .space {
   width: 330px;
 }
+.off, .up {
+  display: none;
+}
+/* ................................  */

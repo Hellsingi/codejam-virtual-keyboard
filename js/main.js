@@ -14,10 +14,10 @@ const keyboardKeys = [
     ['', 'Digit0', '0', ')', '0', ')'],
     ['', 'Minus', '-', '_', '-', '_'],
     ['', 'Equal', '=', '+', '=', '+'],
-    ['backspace', 'Backspace', 'Backspace', '', '', ''],
+    ['backspace', 'Backspace', 'Backspace', 'Backspace', 'Backspace', 'Backspace'],
   ],
   [
-    ['tab', 'Tab', 'Tab', '', '', ''],
+    ['tab', 'Tab', 'Tab', 'Tab', 'Tab', 'Tab'],
     ['', 'KeyQ', 'й', 'Й', 'q', 'Q'],
     ['', 'KeyW', 'ц', 'Ц', 'w', 'W'],
     ['', 'KeyE', 'у', 'У', 'e', 'E'],
@@ -31,10 +31,10 @@ const keyboardKeys = [
     ['', 'BracketLeft', 'х', 'Х', '[', '{'],
     ['', 'BracketRight', 'ъ', 'Ъ', ']', '}'],
     ['', 'Backslash', '\\', '/', '\\', '|'],
-    ['del', 'Delete', 'Del', '', '', '', '']
+    ['del', 'Delete', 'Del', 'Del', 'Del', 'Del', 'Del'],
   ],
   [
-    ['capslock', 'CapsLock', 'CapsLock', '', '', '', ''],
+    ['capslock', 'CapsLock', 'CapsLock', 'CapsLock', 'CapsLock', 'CapsLock', 'CapsLock'],
     ['', 'KeyA', 'ф', 'Ф', 'a', 'A'],
     ['', 'KeyS', 'ы', 'Ы', 's', 'S'],
     ['', 'KeyD', 'в', 'В', 'd', 'D'],
@@ -46,10 +46,10 @@ const keyboardKeys = [
     ['', 'KeyL', 'д', 'Д', 'l', 'L'],
     ['', 'Semicolon', 'ж', 'Ж', ';', ':'],
     ['', 'Quote', 'э', 'Э', "'", '"'],
-    ['enter', 'Enter', 'Enter', '', '', '']
+    ['enter', 'Enter', 'Enter', 'Enter', 'Enter', 'Enter'],
   ],
   [
-    ['shift', 'Shift', 'Shift', '', '', ''],
+    ['shift', 'Shift', 'Shift', 'Shift', 'Shift', 'Shift'],
     ['', 'KeyZ', 'я', 'Я', 'z', 'Z'],
     ['', 'KeyX', 'ч', 'Ч', 'x', 'X'],
     ['', 'KeyC', 'с', 'С', 'c', 'C'],
@@ -60,20 +60,20 @@ const keyboardKeys = [
     ['', 'Comma', 'б', 'Б', '.', '<'],
     ['', 'Period', 'ю', 'Ю', ',', '>'],
     ['', 'Slash', '.', ',', '/', '?'],
-    ['', 'ArrowUp', '▲', '', '', ''],
-    ['shift', 'Shift', 'Shift', '', '', '']
+    ['', 'ArrowUp', '▲', '▲', '▲', '▲'],
+    ['shift', 'Shift', 'Shift', 'Shift', 'Shift', 'Shift'],
   ],
   [
-    ['ctrl', 'Ctrl', 'Ctrl', '', '', ''],
-    ['win', 'Win', 'Win', '', '', ''],
-    ['alt', 'Alt', 'Alt', '', '', ''],
+    ['ctrl', 'Ctrl', 'Ctrl', 'Ctrl', 'Ctrl', 'Ctrl'],
+    ['win', 'Win', 'Win', 'Win', 'Win', 'Win'],
+    ['alt', 'Alt', 'Alt', 'Alt', 'Alt', 'Alt'],
     ['space', 'Space', ' ', ' ', '', ''],
-    ['alt', 'Alt', 'Alt', '', '', ''],
+    ['alt', 'Alt', 'Alt', 'Alt', 'Alt', 'Alt'],
     ['', 'ArrowLeft', '◄', '◄', '◄', '◄'],
     ['', 'ArrowDown', '▼', '▼', '▼', '▼'],
     ['', 'ArrowRight', '►', '►', '►', '►'],
-    ['ctrl', 'Ctrl', 'Ctrl', '', '', '']
-  ]
+    ['ctrl', 'Ctrl', 'Ctrl', 'Ctrl', 'Ctrl', 'Ctrl'],
+  ],
 ];
 
 // Creating keyboard elements
@@ -94,6 +94,22 @@ keyboard.className = 'keyboard';
 keyboard.id = 'keyboard';
 divWrap.append(keyboard);
 
+// KeyboardLanguage changing
+const lang = localStorage.getItem('virtualLang');
+if (lang === null) {
+  localStorage.setItem('virtualLang', 'eng');
+}
+document.addEventListener('keydown', (evt) => {
+  if (evt.shiftKey && evt.altKey) {
+    if (lang === 'eng') {
+      localStorage.setItem('virtualLang', 'ru');
+    } else {
+      localStorage.setItem('virtualLang', 'eng');
+    }
+    location.reload();
+  }
+});
+
 const rowNumbers = [14, 15, 13, 13, 9];
 for (let i = 0; i < keyboardKeys.length; i++) {
   const row = document.createElement('div');
@@ -104,9 +120,41 @@ for (let i = 0; i < keyboardKeys.length; i++) {
     key.className = `key ${keyboardKeys[i][j][0]}`;
     row.append(key);
 
-    const span = document.createElement('span');
-    span.className = `${keyboardKeys[i][j][1]}`;
-    span.insertAdjacentText('afterbegin', keyboardKeys[i][j][2]);
-    key.append(span);
+    const spanEn = document.createElement('span');
+    const spanEnUp = document.createElement('span');
+    const spanEnDown = document.createElement('span');
+    const spanRu = document.createElement('span');
+    const spanRuUp = document.createElement('span');
+    const spanRuDown = document.createElement('span');
+
+    let [langOn, langOff] = ['on', 'off'];
+    if (lang === 'eng') {
+      langOff = ' off';
+      langOn = ' on';
+    } else {
+      langOn = ' off';
+      langOff = ' on';
+    }
+    spanEn.className = keyboardKeys[i][j][1] + langOn;
+    spanRu.className = keyboardKeys[i][j][1] + langOff;
+
+    key.append(spanEn);
+    key.append(spanRu);
+
+    spanRuDown.className = 'case down';
+    spanRuDown.insertAdjacentText('afterbegin', keyboardKeys[i][j][2]);
+    spanRu.append(spanRuDown);
+
+    spanRuUp.className = 'case up';
+    spanRuUp.insertAdjacentText('afterbegin', keyboardKeys[i][j][3]);
+    spanRu.append(spanRuUp);
+
+    spanEnDown.className = 'case down';
+    spanEnDown.insertAdjacentText('afterbegin', keyboardKeys[i][j][4]);
+    spanEn.append(spanEnDown);
+
+    spanEnUp.className = 'case up';
+    spanEnUp.insertAdjacentText('afterbegin', keyboardKeys[i][j][5]);
+    spanEn.append(spanEnUp);
   }
 }
