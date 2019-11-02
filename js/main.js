@@ -96,17 +96,28 @@ divWrap.append(keyboard);
 
 // KeyboardLanguage changing
 const lang = localStorage.getItem('virtualLang');
-if (lang === null) {
+if (localStorage.getItem('virtualLang') === null) {
   localStorage.setItem('virtualLang', 'eng');
 }
 document.addEventListener('keydown', (evt) => {
   if (evt.shiftKey && evt.altKey) {
-    if (lang === 'eng') {
+    if (localStorage.getItem('virtualLang') === 'eng') {
+      localStorage.removeItem('virtualLang');
       localStorage.setItem('virtualLang', 'ru');
-    } else {
+    } else if (localStorage.getItem('virtualLang') === 'ru') {
+      localStorage.removeItem('virtualLang');
       localStorage.setItem('virtualLang', 'eng');
     }
-    location.reload();
+    keyboard.querySelectorAll('.row').forEach((row) => {
+      row.querySelectorAll('.key').forEach((key) => {
+        const on = key.querySelector('.on');
+        const off = key.querySelector('.off');
+        on.classList.remove('on');
+        on.classList.add('off');
+        off.classList.remove('off');
+        off.classList.add('on');
+      });
+    });
   }
 });
 
@@ -158,3 +169,26 @@ for (let i = 0; i < keyboardKeys.length; i++) {
     spanEn.append(spanEnUp);
   }
 }
+
+keyboard.addEventListener('click', (evt) => {
+  const targetBtn = evt.target.closest('button');
+  const targetLang = targetBtn.querySelector('.on');
+
+  keyboardKeys.forEach((row) => {
+    row.forEach((el) => {
+      if (el[1] === targetLang.className.split(' ')[0]) {
+        // textarea.value += el;
+      }
+    });
+  });
+});
+
+// document.addEventListener('keydown', (evt) => {
+//   evt.preventDefault();
+//   // textarea.value +=evt.code;
+//   let char = keyboardKeys[];
+//   console.log('char', char);
+//   // console.log(textarea.value, 'value');
+
+//   // textarea.value +=evt.code;
+// });
