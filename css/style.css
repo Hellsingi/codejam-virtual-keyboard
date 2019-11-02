@@ -1,0 +1,91 @@
+body {
+  background-color: #141d26;
+}
+.wrapper {
+  margin: 0 auto;
+  border: 1px solid rebeccapurple;
+  padding: 30px;
+}
+.textarea {
+  display: block;
+  width: 700px;
+  height: 150px;
+  margin: 0 auto 20px;
+  padding: 20px;
+  font-size: 18px;
+  resize: none;
+}
+.keyboard {
+  width: 704px;
+  margin: 0 auto;
+  padding: 15px;
+  border: 1px solid rgb(218, 255, 176);
+  border-radius: 10px;
+}
+.keyboard .row {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  height: 40px;
+  margin-bottom: 8px;
+}
+.row .key {
+  width: 40px;
+  height: 40px;
+  font-weight: 600;
+  border: 1px solid #c7d0d4;
+  font-size: 15px;
+  border: 1px solid #c7d0d4;
+  background: #fff;
+  margin: 1px;
+  padding: 5px;
+  text-align: center;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.keyboard .key:hover {
+  background-color: #c7d0d4;
+}
+.keyboard .backspace,
+.keyboard .capslock {
+  width: 100px;
+}
+.keyboard .shift {
+  width: 86px;
+}
+.keyboard .alt,
+.keyboard .arrow,
+.keyboard .backspace,
+.keyboard .capslock,
+.keyboard .ctrl,
+.keyboard .del,
+.keyboard .enter,
+.keyboard .shift,
+.keyboard .shift-right,
+.keyboard .tab,
+.keyboard .win {
+  font-weight: 600;
+  background-color: darkgrey;
+}
+
+.keyboard .tab {
+  width: 50px;
+}
+
+.keyboard .del {
+  width: 44px;
+}
+
+.keyboard .enter,
+.keyboard .shift-right {
+  width: 86px;
+}
+
+.keyboard .ctrl {
+  width: 40px;
+}
+
+.keyboard .space {
+  width: 330px;
+}
