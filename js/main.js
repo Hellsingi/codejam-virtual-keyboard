@@ -66,7 +66,7 @@ const keyboardKeys = [
   [
     ['ctrl', 'Ctrl', 'Ctrl', 'Ctrl', 'Ctrl', 'Ctrl'],
     ['win', 'Win', 'Win', 'Win', 'Win', 'Win'],
-    ['alt', 'Alt', 'Alt', 'Alt', 'Alt', 'Alt'],
+    ['alt', '322222222224', 'Alt', 'Alt', 'Alt', 'Alt'],
     ['space', 'Space', ' ', ' ', '', ''],
     ['alt', 'Alt', 'Alt', 'Alt', 'Alt', 'Alt'],
     ['', 'ArrowLeft', '◄', '◄', '◄', '◄'],
@@ -183,10 +183,32 @@ for (let i = 0; i < keyboardKeys.length; i++) {
 //   });
 // });
 
+// function activeButton(code){
+//   console.log(code,'cccccc');
+//   keyboardKeys.forEach((row) => {
+//     row.forEach( (elem) => {
+//       if(code === elem[1]){
+//         const BlaBla = document.querySelector('.code');
+//         // addActiveState(code);
+//         console.log('bla', BlaBla);
+//         console.log(code, 'dddd');
+//       }
+//     })
+//   })
+// }
+
 // Functionality: printing symbols
 
 let shiftPress = false;
 let capsPress = false;
+
+function addActiveState(element) {
+  element.classList.add('active');
+}
+
+function removeActiveState(element) {
+  element.classList.remove('active');
+}
 
 function caseUp() {
   shiftPress = true;
@@ -210,13 +232,16 @@ function caseDown() {
   });
 }
 
+const shiftKey = document.querySelector('.shift');
 function shiftUpKeyboard(evt) {
   if (evt.shiftKey) {
+    addActiveState(shiftKey);
     caseUp();
   }
 }
 function shiftDownKeyboard() {
   shiftPress = false;
+  removeActiveState(shiftKey);
   caseDown();
 }
 
@@ -231,7 +256,7 @@ function printingInTextArea(evt) {
   keyboardKeys.forEach((row) => {
     row.forEach((el) => {
       if (el[1] === targetBtnName && targetBtnName !== 'Delete' && targetBtnName !== 'Backspace' && targetBtnName !== 'CapsLock') {
-        if (localStorage.getItem('virtualKeyboardLang') === 'ru') {
+        if (localStorage.getItem('virtualLang') === 'ru') {
           shiftPress ? (symbol = el[3]) : (symbol = el[2]);
         } else shiftPress ? (symbol = el[5]) : (symbol = el[4]);
       }
@@ -245,6 +270,7 @@ function printingInTextArea(evt) {
   if (specialBtn === 'enter') {
     symbol = '\n';
   }
+
   // Adding symbol to textArea
   textArea.setRangeText(symbol, textArea.selectionStart, textArea.selectionEnd, 'end');
 
@@ -267,10 +293,12 @@ function printingInTextArea(evt) {
   if (specialBtn === 'capslock') {
     const capsBtn = document.querySelector('.capslock');
     if (capsPress === true) {
-      capsBtn.classList.add('active');
+      // capsBtn.classList.add('active');
+      addActiveState(capsBtn);
       caseUp();
     } else {
-      capsBtn.classList.remove('active');
+      // capsBtn.classList.remove('active');
+      removeActiveState(capsBtn);
       caseDown();
     }
     capsPress = !capsPress;
