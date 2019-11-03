@@ -83,11 +83,11 @@ const divWrap = document.createElement('div');
 divWrap.className = 'wrapper';
 body.append(divWrap);
 
-const textarea = document.createElement('textarea');
-textarea.className = 'textarea';
-textarea.id = 'textarea';
-textarea.setAttribute('type', 'textarea');
-divWrap.append(textarea);
+const textArea = document.createElement('textarea');
+textArea.className = 'textarea';
+textArea.id = 'textarea';
+textArea.setAttribute('type', 'textarea');
+divWrap.append(textArea);
 
 const keyboard = document.createElement('div');
 keyboard.className = 'keyboard';
@@ -95,7 +95,6 @@ keyboard.id = 'keyboard';
 divWrap.append(keyboard);
 
 // KeyboardLanguage changing
-const lang = localStorage.getItem('virtualLang');
 if (localStorage.getItem('virtualLang') === null) {
   localStorage.setItem('virtualLang', 'eng');
 }
@@ -126,6 +125,7 @@ for (let i = 0; i < keyboardKeys.length; i++) {
   const row = document.createElement('div');
   row.className = 'row';
   keyboard.append(row);
+
   for (let j = 0; j < rowNumbers[i]; j++) {
     const key = document.createElement('button');
     key.className = `key ${keyboardKeys[i][j][0]}`;
@@ -139,7 +139,7 @@ for (let i = 0; i < keyboardKeys.length; i++) {
     const spanRuDown = document.createElement('span');
 
     let [langOn, langOff] = ['on', 'off'];
-    if (lang === 'eng') {
+    if (localStorage.getItem('virtualLang') === 'eng') {
       langOff = ' off';
       langOn = ' on';
     } else {
@@ -152,43 +152,132 @@ for (let i = 0; i < keyboardKeys.length; i++) {
     key.append(spanEn);
     key.append(spanRu);
 
-    spanRuDown.className = 'case down';
+    spanRuDown.className = 'case-show';
     spanRuDown.insertAdjacentText('afterbegin', keyboardKeys[i][j][2]);
     spanRu.append(spanRuDown);
 
-    spanRuUp.className = 'case up';
+    spanRuUp.className = 'case-hidden';
     spanRuUp.insertAdjacentText('afterbegin', keyboardKeys[i][j][3]);
     spanRu.append(spanRuUp);
 
-    spanEnDown.className = 'case down';
+    spanEnDown.className = 'case-show';
     spanEnDown.insertAdjacentText('afterbegin', keyboardKeys[i][j][4]);
     spanEn.append(spanEnDown);
 
-    spanEnUp.className = 'case up';
+    spanEnUp.className = 'case-hidden';
     spanEnUp.insertAdjacentText('afterbegin', keyboardKeys[i][j][5]);
     spanEn.append(spanEnUp);
   }
 }
 
-keyboard.addEventListener('click', (evt) => {
-  const targetBtn = evt.target.closest('button');
-  const targetLang = targetBtn.querySelector('.on');
+// keyboard.addEventListener('click', (evt) => {
+//   const targetBtn = evt.target.closest('button');
+//   const targetLang = targetBtn.querySelector('.on');
 
+//   keyboardKeys.forEach((row) => {
+//     row.forEach((el) => {
+//       if (el[1] === targetLang.className.split(' ')[0]) {
+//         // textarea.value += el;
+//       }
+//     });
+//   });
+// });
+
+// Functionality: printing symbols
+
+let shiftPress = false;
+let capsPress = false;
+
+function caseUp() {
+  shiftPress = true;
+  // Changing case view in index.html to Uppercase
+  document.querySelectorAll('.on').forEach((key) => {
+    key.children[0].classList.remove('case-shown');
+    key.children[0].classList.add('case-hidden');
+    key.children[1].classList.add('case-shown');
+    key.children[1].classList.remove('case-hidden');
+  });
+}
+
+// Changing case view in index.html to undercase
+function caseDown() {
+  shiftPress = false;
+  document.querySelectorAll('.on').forEach((key) => {
+    key.children[0].classList.add('case-shown');
+    key.children[0].classList.remove('case-hidden');
+    key.children[1].classList.remove('case-shown');
+    key.children[1].classList.add('case-hidden');
+  });
+}
+
+function shiftUpKeyboard(evt) {
+  if (evt.shiftKey) {
+    caseUp();
+  }
+}
+function shiftDownKeyboard() {
+  shiftPress = false;
+  caseDown();
+}
+
+function printingInTextArea(evt) {
+  let symbol = '';
+  const targetBtn = evt.target.closest('button');
+  const targetSpan = targetBtn.querySelector('.on');
+  const targetBtnName = targetSpan.className.split(' ')[0];
+  const specialBtn = targetBtn.classList[1];
+
+  // Finding pressed symbol
   keyboardKeys.forEach((row) => {
     row.forEach((el) => {
-      if (el[1] === targetLang.className.split(' ')[0]) {
-        // textarea.value += el;
+      if (el[1] === targetBtnName && targetBtnName !== 'Delete' && targetBtnName !== 'Backspace' && targetBtnName !== 'CapsLock') {
+        if (localStorage.getItem('virtualKeyboardLang') === 'ru') {
+          shiftPress ? (symbol = el[3]) : (symbol = el[2]);
+        } else shiftPress ? (symbol = el[5]) : (symbol = el[4]);
       }
     });
   });
-});
 
-// document.addEventListener('keydown', (evt) => {
-//   evt.preventDefault();
-//   // textarea.value +=evt.code;
-//   let char = keyboardKeys[];
-//   console.log('char', char);
-//   // console.log(textarea.value, 'value');
+  if (specialBtn === 'tab') {
+    symbol = '  ';
+  }
 
-//   // textarea.value +=evt.code;
-// });
+  if (specialBtn === 'enter') {
+    symbol = '\n';
+  }
+  // Adding symbol to textArea
+  textArea.setRangeText(symbol, textArea.selectionStart, textArea.selectionEnd, 'end');
+
+  if (specialBtn === 'backspace') {
+    if (textArea.selectionStart > 0) {
+      const pos = textArea.selectionStart;
+      textArea.value = textArea.value.slice(0, pos - 1) + textArea.value.slice(pos, textArea.value.length);
+      textArea.setRangeText('', pos - 1, pos - 1, 'end');
+    }
+  }
+
+  if (specialBtn === 'del') {
+    const pos = textArea.selectionStart;
+    if (textArea.selectionStart <= textArea.value.length) {
+      textArea.value = textArea.value.slice(0, pos) + textArea.value.slice(pos + 1, textArea.value.length);
+      textArea.setRangeText('', pos, pos, 'end');
+    }
+  }
+
+  if (specialBtn === 'capslock') {
+    const capsBtn = document.querySelector('.capslock');
+    if (capsPress === true) {
+      capsBtn.classList.add('active');
+      caseUp();
+    } else {
+      capsBtn.classList.remove('active');
+      caseDown();
+    }
+    capsPress = !capsPress;
+  }
+  textArea.focus();
+}
+
+document.addEventListener('keydown', shiftUpKeyboard);
+keyboard.addEventListener('click', printingInTextArea);
+document.addEventListener('keyup', shiftDownKeyboard);
