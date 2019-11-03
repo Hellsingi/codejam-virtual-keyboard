@@ -1,80 +1,5 @@
 // window.onload = function load() {
-const keyboardKeys = [
-  [
-    ['', 'Backquote', 'ё', 'Ё', '`', '~'],
-    ['', 'Digit1', '1', '!', '1', '!'],
-    ['', 'Digit2', '2', '"', '2', '@'],
-    ['', 'Digit3', '3', '№', '3', '#'],
-    ['', 'Digit4', '4', ';', '4', '$'],
-    ['', 'Digit5', '5', '%', '5', '%'],
-    ['', 'Digit6', '6', ':', '6', '^'],
-    ['', 'Digit7', '7', '?', '7', '&'],
-    ['', 'Digit8', '8', '*', '8', '*'],
-    ['', 'Digit9', '9', '(', '9', '('],
-    ['', 'Digit0', '0', ')', '0', ')'],
-    ['', 'Minus', '-', '_', '-', '_'],
-    ['', 'Equal', '=', '+', '=', '+'],
-    ['backspace', 'Backspace', 'Backspace', 'Backspace', 'Backspace', 'Backspace'],
-  ],
-  [
-    ['tab', 'Tab', 'Tab', 'Tab', 'Tab', 'Tab'],
-    ['', 'KeyQ', 'й', 'Й', 'q', 'Q'],
-    ['', 'KeyW', 'ц', 'Ц', 'w', 'W'],
-    ['', 'KeyE', 'у', 'У', 'e', 'E'],
-    ['', 'KeyR', 'к', 'К', 'r', 'R'],
-    ['', 'KeyT', 'е', 'Е', 't', 'T'],
-    ['', 'KeyY', 'н', 'Н', 'y', 'Y'],
-    ['', 'KeyU', 'г', 'Г', 'u', 'U'],
-    ['', 'KeyI', 'ш', 'Ш', 'i', 'I'],
-    ['', 'KeyO', 'щ', 'Щ', 'o', 'O'],
-    ['', 'KeyP', 'з', 'З', 'p', 'P'],
-    ['', 'BracketLeft', 'х', 'Х', '[', '{'],
-    ['', 'BracketRight', 'ъ', 'Ъ', ']', '}'],
-    ['', 'Backslash', '\\', '/', '\\', '|'],
-    ['del', 'Delete', 'Del', 'Del', 'Del', 'Del', 'Del'],
-  ],
-  [
-    ['capslock', 'CapsLock', 'CapsLock', 'CapsLock', 'CapsLock', 'CapsLock', 'CapsLock'],
-    ['', 'KeyA', 'ф', 'Ф', 'a', 'A'],
-    ['', 'KeyS', 'ы', 'Ы', 's', 'S'],
-    ['', 'KeyD', 'в', 'В', 'd', 'D'],
-    ['', 'KeyF', 'а', 'А', 'f', 'F'],
-    ['', 'KeyG', 'п', 'П', 'g', 'G'],
-    ['', 'KeyH', 'р', 'Р', 'h', 'H'],
-    ['', 'KeyJ', 'о', 'О', 'j', 'J'],
-    ['', 'KeyK', 'л', 'Л', 'k', 'K'],
-    ['', 'KeyL', 'д', 'Д', 'l', 'L'],
-    ['', 'Semicolon', 'ж', 'Ж', ';', ':'],
-    ['', 'Quote', 'э', 'Э', "'", '"'],
-    ['enter', 'Enter', 'Enter', 'Enter', 'Enter', 'Enter'],
-  ],
-  [
-    ['shift', 'Shift', 'Shift', 'Shift', 'Shift', 'Shift'],
-    ['', 'KeyZ', 'я', 'Я', 'z', 'Z'],
-    ['', 'KeyX', 'ч', 'Ч', 'x', 'X'],
-    ['', 'KeyC', 'с', 'С', 'c', 'C'],
-    ['', 'KeyV', 'м', 'М', 'v', 'V'],
-    ['', 'KeyB', 'и', 'И', 'b', 'B'],
-    ['', 'KeyN', 'т', 'Т', 'n', 'N'],
-    ['', 'KeyM', 'ь', 'Ь', 'm', 'M'],
-    ['', 'Comma', 'б', 'Б', '.', '<'],
-    ['', 'Period', 'ю', 'Ю', ',', '>'],
-    ['', 'Slash', '.', ',', '/', '?'],
-    ['', 'ArrowUp', '▲', '▲', '▲', '▲'],
-    ['shift', 'Shift', 'Shift', 'Shift', 'Shift', 'Shift'],
-  ],
-  [
-    ['ctrl', 'Ctrl', 'Ctrl', 'Ctrl', 'Ctrl', 'Ctrl'],
-    ['win', 'Win', 'Win', 'Win', 'Win', 'Win'],
-    ['alt', '322222222224', 'Alt', 'Alt', 'Alt', 'Alt'],
-    ['space', 'Space', ' ', ' ', '', ''],
-    ['alt', 'Alt', 'Alt', 'Alt', 'Alt', 'Alt'],
-    ['', 'ArrowLeft', '◄', '◄', '◄', '◄'],
-    ['', 'ArrowDown', '▼', '▼', '▼', '▼'],
-    ['', 'ArrowRight', '►', '►', '►', '►'],
-    ['ctrl', 'Ctrl', 'Ctrl', 'Ctrl', 'Ctrl', 'Ctrl'],
-  ],
-];
+import { keyboardKeys } from './keyboardKeys.js';
 
 // Creating keyboard elements
 const body = document.querySelector('body');
@@ -82,6 +7,12 @@ const body = document.querySelector('body');
 const divWrap = document.createElement('div');
 divWrap.className = 'wrapper';
 body.append(divWrap);
+
+const pageLangBtn = document.createElement('button');
+pageLangBtn.className = 'page-lang';
+pageLangBtn.insertAdjacentText('afterbegin', 'Lang');
+pageLangBtn.innerText = localStorage.getItem('virtualKeyboardLang');
+divWrap.append(pageLangBtn);
 
 const textArea = document.createElement('textarea');
 textArea.className = 'textarea';
@@ -98,28 +29,33 @@ divWrap.append(keyboard);
 if (localStorage.getItem('virtualLang') === null) {
   localStorage.setItem('virtualLang', 'eng');
 }
-document.addEventListener('keydown', (evt) => {
-  if (evt.shiftKey && evt.altKey) {
-    if (localStorage.getItem('virtualLang') === 'eng') {
-      localStorage.removeItem('virtualLang');
-      localStorage.setItem('virtualLang', 'ru');
-    } else if (localStorage.getItem('virtualLang') === 'ru') {
-      localStorage.removeItem('virtualLang');
-      localStorage.setItem('virtualLang', 'eng');
-    }
-    keyboard.querySelectorAll('.row').forEach((row) => {
-      row.querySelectorAll('.key').forEach((key) => {
-        const on = key.querySelector('.on');
-        const off = key.querySelector('.off');
-        on.classList.remove('on');
-        on.classList.add('off');
-        off.classList.remove('off');
-        off.classList.add('on');
-      });
-    });
-  }
-});
 
+// Language chanching pressing on button on page
+function pageLangChanging() {
+  if (localStorage.getItem('virtualLang') === 'eng') {
+    localStorage.removeItem('virtualLang');
+    localStorage.setItem('virtualLang', 'ru');
+  } else if (localStorage.getItem('virtualLang') === 'ru') {
+    localStorage.removeItem('virtualLang');
+    localStorage.setItem('virtualLang', 'eng');
+  }
+
+  pageLangBtn.innerText = localStorage.getItem('virtualLang');
+
+  keyboard.querySelectorAll('.row').forEach((row) => {
+    row.querySelectorAll('.key').forEach((key) => {
+      const on = key.querySelector('.on');
+      const off = key.querySelector('.off');
+      on.classList.remove('on');
+      on.classList.add('off');
+      off.classList.remove('off');
+      off.classList.add('on');
+    });
+  });
+}
+
+
+// Creating buttons
 const rowNumbers = [14, 15, 13, 13, 9];
 for (let i = 0; i < keyboardKeys.length; i++) {
   const row = document.createElement('div');
@@ -152,7 +88,7 @@ for (let i = 0; i < keyboardKeys.length; i++) {
     key.append(spanEn);
     key.append(spanRu);
 
-    spanRuDown.className = 'case-show';
+    spanRuDown.className = 'case-shown';
     spanRuDown.insertAdjacentText('afterbegin', keyboardKeys[i][j][2]);
     spanRu.append(spanRuDown);
 
@@ -160,7 +96,7 @@ for (let i = 0; i < keyboardKeys.length; i++) {
     spanRuUp.insertAdjacentText('afterbegin', keyboardKeys[i][j][3]);
     spanRu.append(spanRuUp);
 
-    spanEnDown.className = 'case-show';
+    spanEnDown.className = 'case-shown';
     spanEnDown.insertAdjacentText('afterbegin', keyboardKeys[i][j][4]);
     spanEn.append(spanEnDown);
 
@@ -197,10 +133,11 @@ for (let i = 0; i < keyboardKeys.length; i++) {
 //   })
 // }
 
-// Functionality: printing symbols
 
+// Flags of special button pressed/not pressed
 let shiftPress = false;
-let capsPress = false;
+let [altLeftPress, altRightPress] = [false, false];
+let [ctrlLeftPress, ctrlRightPress] = [false, false];
 
 function addActiveState(element) {
   element.classList.add('active');
@@ -232,80 +169,157 @@ function caseDown() {
   });
 }
 
-const shiftKey = document.querySelector('.shift');
+// const shiftKey = document.querySelector('.shift');
 function shiftUpKeyboard(evt) {
   if (evt.shiftKey) {
-    addActiveState(shiftKey);
+    // addActiveState(shiftKey);
     caseUp();
   }
 }
 function shiftDownKeyboard() {
-  shiftPress = false;
-  removeActiveState(shiftKey);
+  // shiftPress = false;
+  // removeActiveState(shiftKey);
   caseDown();
 }
 
+function setCaretPosition(elem, pos) {
+  if (elem.setSelectionRange) {
+    elem.focus();
+    elem.setSelectionRange(pos, pos);
+  } else if (elem.createTextRange) {
+    const range = elem.createTextRange();
+    range.collapse(true);
+    range.moveEnd('character', pos);
+    range.moveStart('character', pos);
+    range.select();
+  }
+}
+
+function activeBtnHighlighting(btnPress, specialBtnEl) {
+  if (btnPress === false) {
+    btnPress = true;
+    // specialBtnEl.classList.add('active');
+    addActiveState(specialBtnEl);
+  } else {
+    btnPress = false;
+    // specialBtnEl.classList.remove('active');
+    removeActiveState(specialBtnEl);
+  }
+  return btnPress;
+}
+
+// Functionality: printing symbols
 function printingInTextArea(evt) {
   let symbol = '';
   const targetBtn = evt.target.closest('button');
-  const targetSpan = targetBtn.querySelector('.on');
-  const targetBtnName = targetSpan.className.split(' ')[0];
-  const specialBtn = targetBtn.classList[1];
+  if (targetBtn) {
+    const targetSpan = targetBtn.querySelector('.on');
+    const targetBtnName = targetSpan.className.split(' ')[0];
+    const specialBtn = targetBtn.classList[1];
 
-  // Finding pressed symbol
-  keyboardKeys.forEach((row) => {
-    row.forEach((el) => {
-      if (el[1] === targetBtnName && targetBtnName !== 'Delete' && targetBtnName !== 'Backspace' && targetBtnName !== 'CapsLock') {
-        if (localStorage.getItem('virtualLang') === 'ru') {
-          shiftPress ? (symbol = el[3]) : (symbol = el[2]);
-        } else shiftPress ? (symbol = el[5]) : (symbol = el[4]);
-      }
+    // Finding pressed symbol
+    keyboardKeys.forEach((row) => {
+      row.forEach((el) => {
+        if (
+          el[1] === targetBtnName
+          && (specialBtn === undefined
+            || specialBtn === 'space'
+            || specialBtn === 'tab'
+            || specialBtn === 'enter')
+        ) {
+          if (localStorage.getItem('virtualLang') === 'ru') {
+            shiftPress ? (symbol = el[3]) : (symbol = el[2]);
+          } else shiftPress ? (symbol = el[5]) : (symbol = el[4]);
+        }
+      });
     });
-  });
 
-  if (specialBtn === 'tab') {
-    symbol = '  ';
-  }
+    if (specialBtn === 'tab') {
+      symbol = '  ';
+    }
 
-  if (specialBtn === 'enter') {
-    symbol = '\n';
-  }
+    if (specialBtn === 'enter') {
+      symbol = '\n';
+    }
 
-  // Adding symbol to textArea
-  textArea.setRangeText(symbol, textArea.selectionStart, textArea.selectionEnd, 'end');
+    // Adding symbol to textArea
+    textArea.setRangeText(symbol, textArea.selectionStart, textArea.selectionEnd, 'end');
 
-  if (specialBtn === 'backspace') {
-    if (textArea.selectionStart > 0) {
+    if (specialBtn === 'backspace') {
+      if (textArea.selectionStart > 0) {
+        const pos = textArea.selectionStart;
+        textArea.value = textArea.value.slice(0, pos - 1) + textArea.value.slice(pos, textArea.value.length);
+        textArea.setRangeText('', pos - 1, pos - 1, 'end');
+      }
+    }
+
+    if (specialBtn === 'del') {
       const pos = textArea.selectionStart;
-      textArea.value = textArea.value.slice(0, pos - 1) + textArea.value.slice(pos, textArea.value.length);
-      textArea.setRangeText('', pos - 1, pos - 1, 'end');
+      if (textArea.selectionStart <= textArea.value.length) {
+        textArea.value = textArea.value.slice(0, pos) + textArea.value.slice(pos + 1, textArea.value.length);
+        textArea.setRangeText('', pos, pos, 'end');
+      }
+    }
+
+    const specialBtnEl = document.querySelector(`.${specialBtn}`);
+
+    if (
+      specialBtn === 'shift-left'
+      || specialBtn === 'shift-right'
+      || specialBtn === 'capslock'
+    ) {
+      if (shiftPress === false) {
+        // specialBtnEl.classList.add('active');
+        addActiveState(specialBtnEl);
+        caseUp();
+      } else {
+        // specialBtnEl.classList.remove('active');
+        removeActiveState(specialBtnEl);
+        caseDown();
+      }
+    }
+
+    if (specialBtn === 'arrow') {
+      const pos = textArea.selectionStart;
+
+      if (targetBtnName === 'ArrowUp') {
+        if (textArea.selectionStart > 69) {
+          setCaretPosition(textArea, pos - 69);
+        } else if (targetBtnName === 'ArrowRight') {
+          setCaretPosition(textArea, pos + 1);
+        } else if (targetBtnName === 'ArrowDown') {
+          setCaretPosition(textArea, pos + 69);
+        } else if (targetBtnName === 'ArrowLeft') {
+          if (textArea.selectionStart > 0) {
+            setCaretPosition(textArea, pos - 1);
+          }
+        }
+      }
+    }
+
+    if (specialBtn === 'alt-left') {
+      altLeftPress = activeBtnHighlighting(altLeftPress, specialBtnEl);
+    }
+
+    if (specialBtn === 'alt-right') {
+      altRightPress = activeBtnHighlighting(altRightPress, specialBtnEl);
+    }
+
+    if (specialBtn === 'ctrl-left') {
+      ctrlLeftPress = activeBtnHighlighting(ctrlLeftPress, specialBtnEl);
+    }
+
+    if (specialBtn === 'ctrl-right') {
+      ctrlRightPress = activeBtnHighlighting(ctrlRightPress, specialBtnEl);
     }
   }
 
-  if (specialBtn === 'del') {
-    const pos = textArea.selectionStart;
-    if (textArea.selectionStart <= textArea.value.length) {
-      textArea.value = textArea.value.slice(0, pos) + textArea.value.slice(pos + 1, textArea.value.length);
-      textArea.setRangeText('', pos, pos, 'end');
-    }
-  }
-
-  if (specialBtn === 'capslock') {
-    const capsBtn = document.querySelector('.capslock');
-    if (capsPress === true) {
-      // capsBtn.classList.add('active');
-      addActiveState(capsBtn);
-      caseUp();
-    } else {
-      // capsBtn.classList.remove('active');
-      removeActiveState(capsBtn);
-      caseDown();
-    }
-    capsPress = !capsPress;
-  }
   textArea.focus();
 }
 
 document.addEventListener('keydown', shiftUpKeyboard);
 keyboard.addEventListener('click', printingInTextArea);
 document.addEventListener('keyup', shiftDownKeyboard);
+document.addEventListener ('keydown', (evt) => {
+  if (evt.shiftKey && evt.altKey) pageLangChanging();
+});
