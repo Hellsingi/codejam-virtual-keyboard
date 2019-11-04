@@ -164,15 +164,33 @@ function setCaretPosition(elem, pos) {
   }
 }
 
+// Highlighting buttins pressed on real keyboard
 function activeBtnHighlighting(btnPress, specialBtnEl) {
+  let btnPressCopy = btnPress;
   if (btnPress === false) {
-    btnPress = true;
+    btnPressCopy = true;
     addActiveState(specialBtnEl);
   } else {
-    btnPress = false;
+    btnPressCopy = false;
     removeActiveState(specialBtnEl);
   }
-  return btnPress;
+  return btnPressCopy;
+}
+
+// Choosing symbol to print on depend of shift or caps pressed and language
+function symbolChoise(el) {
+  let res = '';
+  const [, , ruLowerCase, ruUpperCase, enLowerCase, enUpperCase] = el;
+  if (localStorage.getItem('virtualLang') === 'ru' && shiftPress) {
+    res = ruUpperCase;
+  } else if (localStorage.getItem('virtualLang') === 'ru' && !shiftPress) {
+    res = ruLowerCase;
+  } else if (localStorage.getItem('virtualLang') === 'eng' && shiftPress) {
+    res = enUpperCase;
+  } else if (localStorage.getItem('virtualLang') === 'eng' && !shiftPress) {
+    res = enLowerCase;
+  }
+  return res;
 }
 
 // Functionality: printing symbols
@@ -194,9 +212,7 @@ function printingInTextArea(evt) {
               || specialBtn === 'tab'
               || specialBtn === 'enter')
         ) {
-          if (localStorage.getItem('virtualLang') === 'ru') {
-            shiftPress ? (symbol = el[3]) : (symbol = el[2]);
-          } else shiftPress ? (symbol = el[5]) : (symbol = el[4]);
+          symbol = symbolChoise(el);
         }
       });
     });
@@ -314,14 +330,12 @@ document.addEventListener('keydown', (evt) => {
           && evt.code !== 'ArrowDown'
           && evt.code !== 'ArrowLeft') {
         evt.preventDefault();
-        if (localStorage.getItem('virtualLang') === 'ru') {
-          shiftPress ? (symbol = el[3]) : (symbol = el[2]);
-        } else shiftPress ? (symbol = el[5]) : (symbol = el[4]);
+        symbol = symbolChoise(el);
       }
     });
   });
 
-  if (evt.code == 'Tab') {
+  if (evt.code === 'Tab') {
     symbol = '  ';
   }
 
