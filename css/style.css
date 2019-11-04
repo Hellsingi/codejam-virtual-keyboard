@@ -56,7 +56,8 @@ body {
 .keyboard .shift-left {
   width: 86px;
 }
-.keyboard .alt,
+.keyboard .alt-left,
+.keyboard .alt-right,
 .keyboard .arrow,
 .keyboard .backspace,
 .keyboard .capslock,

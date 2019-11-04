@@ -1,4 +1,4 @@
-export  const keyboardKeys = [
+const keyboardKeys = [
   [
     ['', 'Backquote', 'ё', 'Ё', '`', '~'],
     ['', 'Digit1', '1', '!', '1', '!'],
@@ -65,12 +65,14 @@ export  const keyboardKeys = [
   [
     ['ctrl-left', 'ControlLeft', 'Ctrl', 'Ctrl', 'Ctrl', 'Ctrl'],
     ['win', 'Win', 'Win', 'Win', 'Win', 'Win'],
-    ['alt', '322222222224', 'Alt', 'Alt', 'Alt', 'Alt'],
-    ['space', 'Space', ' ', ' ', '', ''],
-    ['alt', 'Alt', 'Alt', 'Alt', 'Alt', 'Alt'],
+    ['alt-left', 'AltLeft', 'Alt', 'Alt', 'Alt', 'Alt'],
+    ['space', 'Space', ' ', ' ', ' ', ' '],
+    ['alt-right', 'AltRight', 'Alt', 'Alt', 'Alt', 'Alt'],
     ['arrow', 'ArrowLeft', '◄', '◄', '◄', '◄'],
     ['arrow', 'ArrowDown', '▼', '▼', '▼', '▼'],
     ['arrow', 'ArrowRight', '►', '►', '►', '►'],
     ['ctrl-right', 'ControlRight', 'Ctrl', 'Ctrl', 'Ctrl', 'Ctrl'],
   ],
 ];
+
+export default keyboardKeys;
