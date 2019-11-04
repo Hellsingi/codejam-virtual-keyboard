@@ -46,7 +46,8 @@ body {
 }
 
 .keyboard .key:hover {
-  background-color: #c7d0d4;
+  background-color: rgb(214, 26, 26);
+  /* background-color: black; */
 }
 .keyboard .backspace,
 .keyboard .capslock {
@@ -119,7 +120,7 @@ body {
 
 .page-lang:hover,
 .page-lang:focus {
-  background-color: #476a9e;
+  background-color: rgb(214, 26, 26);
 }
 
 .page-lang:active {

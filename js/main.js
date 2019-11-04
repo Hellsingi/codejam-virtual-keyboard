@@ -279,22 +279,33 @@ function printingInTextArea(evt) {
       }
     }
 
-    if (specialBtn === 'arrow') {
-      const pos = textArea.selectionStart;
+    if (specialBtn === "arrow") {
+      let pos = textArea.selectionStart;
 
-      if (targetBtnName === 'ArrowUp') {
-        if (textArea.selectionStart > 69) {
-          setCaretPosition(textArea, pos - 69);
-        } else if (targetBtnName === 'ArrowRight') {
-          setCaretPosition(textArea, pos + 1);
-        } else if (targetBtnName === 'ArrowDown') {
-          setCaretPosition(textArea, pos + 69);
-        } else if (targetBtnName === 'ArrowLeft') {
+      // if (targetBtnName === "ArrowUp") {
+      //   if (textArea.selectionStart > 69) setCaretPosition(textArea, pos - 69);
+      // } else if (targetBtnName === "ArrowRight") {
+      //   setCaretPosition(textArea, pos + 1);
+      // } else if (targetBtnName === "ArrowDown") {
+      //   setCaretPosition(textArea, pos + 69);
+      // } else if (targetBtnName === "ArrowLeft") {
+      //   if (textArea.selectionStart > 0) setCaretPosition(textArea, pos - 1);
+      // }
+
+      switch(targetBtnName) {
+        case 'ArrowUp': setCaretPosition(textArea, pos - 69);
+          break;
+        case 'ArrowRight': setCaretPosition(textArea, pos + 1);
+          break;
+        case 'ArrowDown': setCaretPosition(textArea, pos + 69);
+          break;
+        case 'ArrowLeft': 
           if (textArea.selectionStart > 0) {
             setCaretPosition(textArea, pos - 1);
           }
-        }
+          break;
       }
+
     }
 
     if (specialBtn === 'alt-left') {
@@ -382,16 +393,30 @@ document.addEventListener('keydown', (evt) => {
 
   const pos = textArea.selectionStart;
 
-  if (evt.code === 'ArrowUp') {
-    setCaretPosition(textArea, pos - 69);
-  } else if (evt.code === 'ArrowRight') {
-    setCaretPosition(textArea, pos + 1);
-  } else if (evt.code === 'ArrowDown') {
-    setCaretPosition(textArea, pos + 69);
-  } else if (evt.code === 'ArrowLeft') {
-    if (textArea.selectionStart > 0) {
-      setCaretPosition(textArea, pos - 1);
-    }
+  // if (evt.code === 'ArrowUp') {
+  //   setCaretPosition(textArea, pos - 69);
+  // } else if (evt.code === 'ArrowRight') {
+  //   setCaretPosition(textArea, pos + 1);
+  // } else if (evt.code === 'ArrowDown') {
+  //   setCaretPosition(textArea, pos + 69);
+  // } else if (evt.code === 'ArrowLeft') {
+  //   if (textArea.selectionStart > 0) {
+  //     setCaretPosition(textArea, pos - 1);
+  //   }
+  // }
+
+  switch(evt.code) {
+    case 'ArrowUp': setCaretPosition(textArea, pos - 69);
+      break;
+    case 'ArrowRight': setCaretPosition(textArea, pos + 1);
+      break;
+    case 'ArrowDown': setCaretPosition(textArea, pos + 69);
+      break;
+    case 'ArrowLeft': 
+      if (textArea.selectionStart > 0) {
+        setCaretPosition(textArea, pos - 1);
+      }
+      break;
   }
 
   textArea.setRangeText(symbol, textArea.selectionStart, textArea.selectionEnd, 'end');
@@ -403,16 +428,19 @@ document.addEventListener('keydown', (evt) => {
         console.log('symb.children[0].classList[0]',symb.children[0].classList[0]);
         if (evt.code === 'CapsLock') {
           if (symb.classList.contains('active')) {
-            symb.classList.remove('active');
+            // symb.classList.remove('active');
+            removeActiveState(symb);
             caseDown();
             shiftPress = false;
           } else {
-            symb.classList.add('active');
+            // symb.classList.add('active');
+            addActiveState(symb);
             caseUp();
             shiftPress = true;
           }
         } else {
-          symb.classList.add('active');
+          // symb.classList.add('active');
+          addActiveState(symb);
         }
       }
     });
@@ -423,7 +451,8 @@ document.addEventListener( 'keyup', (evt) => {
   keyboard.querySelectorAll('.row').forEach( (row) => {
     row.querySelectorAll('.key').forEach( (key) => {
       if (evt.code === key.children[0].classList[0] && evt.code !== 'CapsLock') {
-        key.classList.remove('active');
+        // key.classList.remove('active');
+        removeActiveState(key);
       }
     })
   })
